@@ -65,6 +65,7 @@ module.exports = {
       ext,
       mime: type,
       size: bytesToKbytes(size),
+      path: `${process.env.S3_IMG_DIR}/${metas.vendorId}`
     };
 
     const { refId, ref, source, field } = metas;
@@ -127,12 +128,12 @@ module.exports = {
 
   async upload({ data, files }, { user } = {}) {
     const { fileInfo, ...metas } = data;
-
+    const extendedMetas = {...metas, vendorId: user.vendorId}
     const fileArray = Array.isArray(files) ? files : [files];
     const fileInfoArray = Array.isArray(fileInfo) ? fileInfo : [fileInfo];
 
     const doUpload = async (file, fileInfo) => {
-      const fileData = await this.enhanceFile(file, fileInfo, metas);
+      const fileData = await this.enhanceFile(file, fileInfo, extendedMetas);
 
       return this.uploadFileAndPersist(fileData, { user });
     };

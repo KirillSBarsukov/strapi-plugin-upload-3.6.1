@@ -187,9 +187,7 @@ module.exports = {
 
 
     const data = await validateUploadBody(body);
-    console.log("TEST data", data)
-    console.log("TEST files", files)
-    console.log("TEST user", user)
+
     const uploadedFiles = await uploadService.upload({ data, files }, { user });
 
     ctx.body = pm.sanitize(uploadedFiles, { action: ACTIONS.read, withPrivate: false });
