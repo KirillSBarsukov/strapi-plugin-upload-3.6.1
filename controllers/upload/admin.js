@@ -137,6 +137,8 @@ module.exports = {
     const { pm } = await findEntityAndCheckPermissions(userAbility, ACTIONS.update, fileModel, id);
 
     const data = await validateUploadBody(body);
+    console.log("FILE", data)
+    console.log("USER", user)
     const file = await uploadService.updateFileInfo(id, data.fileInfo, { user });
 
     ctx.body = pm.sanitize(file, { action: ACTIONS.read, withPrivate: false });
