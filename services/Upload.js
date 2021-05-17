@@ -154,7 +154,8 @@ module.exports = {
 
     await strapi.plugins.upload.provider.upload(fileData);
 
-    const thumbnailFile = await generateThumbnail(fileData);
+    // const thumbnailFile = await generateThumbnail(fileData);
+    const thumbnailFile = null;
     if (thumbnailFile) {
       await strapi.plugins.upload.provider.upload(thumbnailFile);
       delete thumbnailFile.buffer;
@@ -162,18 +163,18 @@ module.exports = {
     }
 
     const formats = await generateResponsiveFormats(fileData);
-    if (Array.isArray(formats) && formats.length > 0) {
-      for (const format of formats) {
-        if (!format) continue;
-
-        const { key, file } = format;
-
-        await strapi.plugins.upload.provider.upload(file);
-        delete file.buffer;
-
-        _.set(fileData, ['formats', key], file);
-      }
-    }
+    // if (Array.isArray(formats) && formats.length > 0) {
+    //   for (const format of formats) {
+    //     if (!format) continue;
+    //
+    //     const { key, file } = format;
+    //
+    //     await strapi.plugins.upload.provider.upload(file);
+    //     delete file.buffer;
+    //
+    //     _.set(fileData, ['formats', key], file);
+    //   }
+    // }
 
     const { width, height } = await getDimensions(fileData.buffer);
 
