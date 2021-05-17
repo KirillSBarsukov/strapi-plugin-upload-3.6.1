@@ -185,6 +185,9 @@ module.exports = {
       throw strapi.errors.forbidden();
     }
 
+    console.log("TEST data", data)
+    console.log("TEST files", files)
+    console.log("TEST user", user)
     const data = await validateUploadBody(body);
     const uploadedFiles = await uploadService.upload({ data, files }, { user });
 
