@@ -36,7 +36,13 @@ module.exports = {
 
     const method = _.has(ctx.query, '_q') ? 'search' : 'fetchAll';
 
-    const query = pm.queryFrom(ctx.query);
+    let query = pm.queryFrom(ctx.query);
+    if(user.roles.some(el => el.code === "strapi-author")){
+      query = {
+        ...query,
+        _where: [{created_by: user.id}]
+      }
+    }
     const files = await strapi.plugins.upload.services.upload[method](query);
 
     ctx.body = pm.sanitize(files, { withPrivate: false });
