@@ -21,7 +21,7 @@ const fileModel = 'plugins::upload.file';
 module.exports = {
   async find(ctx) {
     const {
-      state: { userAbility },
+      state: { userAbility, user },
     } = ctx;
 
     const pm = strapi.admin.services.permission.createPermissionsManager({
