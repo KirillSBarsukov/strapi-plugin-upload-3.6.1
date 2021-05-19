@@ -65,6 +65,9 @@ module.exports = {
   },
 
   async count(ctx) {
+    const {
+      state: { user },
+    } = ctx;
     const pm = strapi.admin.services.permission.createPermissionsManager({
       ability: ctx.state.userAbility,
       action: ACTIONS.read,
@@ -76,7 +79,14 @@ module.exports = {
     }
 
     const method = _.has(ctx.query, '_q') ? 'countSearch' : 'count';
-    const query = pm.queryFrom(ctx.query);
+
+    let query = pm.queryFrom(ctx.query);
+    if(user.roles.some(el => el.code === "strapi-author")){
+      query = {
+        ...query,
+        _where: [{created_by: user.id}]
+      }
+    }
 
     const count = await strapi.plugins.upload.services.upload[method](query);
 
